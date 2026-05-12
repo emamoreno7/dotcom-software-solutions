@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DotCom Software & Web Solutions | Software a medida para tu negocio</title>
+    <meta name="description" content="Desarrollamos apps móviles, plataformas SaaS y sistemas de gestión personalizados para pymes, empresas medianas y emprendedores. Mendoza y Buenos Aires, Argentina." />
+    <meta name="keywords" content="software a medida, desarrollo de apps, plataformas SaaS, sistemas de gestión, desarrollo web, Argentina, Mendoza, Buenos Aires" />
+    <meta name="author" content="DotCom Software & Web Solutions" />
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="DotCom Software & Web Solutions | Software a medida" />
+    <meta property="og:description" content="Software a medida que se adapta a tu negocio, no al revés. Apps móviles, SaaS y sistemas de gestión." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://dotcom-software-solutions.netlify.app" />
+    <meta property="og:image" content="/images/logo.png" />
+    <meta property="og:locale" content="es_AR" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="DotCom Software & Web Solutions" />
+    <meta name="twitter:description" content="Software a medida que se adapta a tu negocio, no al revés." />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/images/logo.png" />
+    
+    <!-- Schema.org Organization -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "DotCom Software & Web Solutions",
+      "url": "https://dotcom-software-solutions.netlify.app",
+      "logo": "/images/logo.png",
+      "description": "Desarrollamos apps móviles, plataformas SaaS y sistemas de gestión personalizados.",
+      "email": "emamoreno@icloud.com",
+      "telephone": "+5492634340284",
+      "address": [
+        {
+          "@type": "PostalAddress",
+          "addressLocality": "Mendoza",
+          "addressCountry": "AR"
+        },
+        {
+          "@type": "PostalAddress",
+          "addressLocality": "Pilar, Buenos Aires",
+          "addressCountry": "AR"
+        }
+      ],
+      "sameAs": []
+    }
+    </script>
+
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- Hidden Netlify form for bot detection (required for SPA) -->
+    <form name="contacto" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="nombre" />
+      <input type="text" name="empresa" />
+      <input type="email" name="email" />
+      <input type="text" name="pais" />
+      <select name="tipo_proyecto"></select>
+      <select name="etapa_proyecto"></select>
+      <select name="presupuesto"></select>
+      <textarea name="mensaje"></textarea>
+    </form>
+
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
