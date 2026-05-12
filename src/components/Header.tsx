@@ -33,12 +33,11 @@ export default function Header() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-32 md:h-36">
-          src={`${import.meta.env.BASE_URL}images/logo.png`}
           <a href="#inicio" className="flex items-center gap-3 group">
             <img
               src={`${import.meta.env.BASE_URL}images/logo.png`}
               alt="DotCom Software & Web Solutions"
-              className="h-40 md:h-48 w-auto bg-transparent"
+              className="h-12 md:h-14 w-auto bg-transparent"
             />
           </a>
 
