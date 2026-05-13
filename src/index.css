@@ -178,3 +178,122 @@ html {
 .wa-pulse {
   animation: wa-pulse 2s infinite;
 }
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.animate-blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* ============================================
+   💧 LIQUID DROP EFFECT - Estilo Apple/Stripe
+   ============================================ */
+
+@keyframes liquid-drop {
+  0% {
+    opacity: 0;
+    transform: translateY(-300px) scaleY(2.5) scaleX(0.4);
+    filter: blur(12px);
+    text-shadow: 
+      0 0 20px rgba(0, 191, 255, 0.9),
+      0 0 40px rgba(0, 191, 255, 0.6),
+      0 0 60px rgba(0, 191, 255, 0.4);
+    color: #00BFFF;
+  }
+  40% {
+    opacity: 1;
+    transform: translateY(-50px) scaleY(1.8) scaleX(0.6);
+    filter: blur(6px);
+    text-shadow: 
+      0 0 15px rgba(0, 191, 255, 0.8),
+      0 0 30px rgba(0, 191, 255, 0.5);
+    color: #00BFFF;
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(15px) scaleY(0.6) scaleX(1.4);
+    filter: blur(2px);
+    text-shadow: 
+      0 0 25px rgba(0, 191, 255, 1),
+      0 0 50px rgba(0, 191, 255, 0.7);
+    color: #00BFFF;
+  }
+  75% {
+    transform: translateY(-8px) scaleY(1.15) scaleX(0.92);
+    filter: blur(0px);
+    text-shadow: 0 0 15px rgba(0, 191, 255, 0.6);
+  }
+  88% {
+    transform: translateY(3px) scaleY(0.95) scaleX(1.03);
+    filter: blur(0px);
+    text-shadow: 0 0 8px rgba(0, 191, 255, 0.4);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scaleY(1) scaleX(1);
+    filter: blur(0px);
+    text-shadow: none;
+    color: inherit;
+  }
+}
+
+@keyframes liquid-splash {
+  0%, 55% {
+    opacity: 0;
+    transform: translateX(-50%) scaleX(0);
+  }
+  62% {
+    opacity: 1;
+    transform: translateX(-50%) scaleX(1.5);
+    filter: blur(6px);
+  }
+  78% {
+    opacity: 0.5;
+    transform: translateX(-50%) scaleX(1.1);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) scaleX(0.4);
+    filter: blur(2px);
+  }
+}
+
+.animate-liquid-drop {
+  display: inline-block;
+  position: relative;
+  opacity: 0;
+  transform-origin: center top;
+  will-change: transform, opacity, filter, color;
+  animation: liquid-drop 1.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-liquid-drop::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  width: 100%;
+  height: 8px;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 191, 255, 0.8) 0%,
+    rgba(0, 191, 255, 0.3) 40%,
+    transparent 70%
+  );
+  filter: blur(4px);
+  opacity: 0;
+  transform: translateX(-50%) scaleX(0);
+  animation: liquid-splash 1.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: inherit;
+  pointer-events: none;
+}
+
+.liquid-space {
+  display: inline-block;
+  width: 0.3em;
+}

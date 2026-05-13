@@ -1,107 +1,248 @@
-import { useState, useEffect } from 'react';
-import { Menu, X, Calendar } from 'lucide-react';
+import { useState, useEffect, useRef, useCallback } from "react";
+import { Calendar, Menu, X } from "lucide-react";
 
 const navLinks = [
-  { href: '#inicio', label: 'Inicio' },
-  { href: '#problemas', label: 'Problemas' },
-  { href: '#servicios', label: 'Servicios' },
-  { href: '#por-que-elegirnos', label: 'Nosotros' },
-  { href: '#proceso', label: 'Proceso' },
-  { href: '#casos', label: 'Casos' },
-  { href: '#contacto', label: 'Contacto' },
+  { href: "#inicio", label: "Inicio", id: "inicio" },
+  { href: "#problemas", label: "Problemas", id: "problemas" },
+  { href: "#servicios", label: "Servicios", id: "servicios" },
+  { href: "#nosotros", label: "Nosotros", id: "nosotros" },
+  { href: "#proceso", label: "Proceso", id: "proceso" },
+  { href: "#casos", label: "Casos", id: "casos" },
+  { href: "#contacto", label: "Contacto", id: "contacto" },
 ];
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [activeSection, setActiveSection] = useState("inicio");
+  const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0, opacity: 0 });
+  const lastScrollY = useRef(0);
+  const navRef = useRef<HTMLDivElement>(null);
+  const linkRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
+  // Scroll behavior
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setScrolled(currentScrollY > 20);
+      if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
+        setHidden(true);
+      } else {
+        setHidden(false);
+      }
+      lastScrollY.current = currentScrollY;
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleNavClick = () => setIsOpen(false);
+  // Scroll spy
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: "-40% 0px -55% 0px" }
+    );
+    navLinks.forEach((link) => {
+      const el = document.getElementById(link.id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
+
+  // Update indicator position
+  const updateIndicator = useCallback(() => {
+    const activeIndex = navLinks.findIndex((l) => l.id === activeSection);
+    const activeLink = linkRefs.current[activeIndex];
+    if (activeLink && navRef.current) {
+      const navRect = navRef.current.getBoundingClientRect();
+      const linkRect = activeLink.getBoundingClientRect();
+      setIndicatorStyle({
+        left: linkRect.left - navRect.left,
+        width: linkRect.width,
+        opacity: 1,
+      });
+    }
+  }, [activeSection]);
+
+  useEffect(() => {
+    // Pequeño delay para que el DOM esté listo
+    const timer = setTimeout(updateIndicator, 50);
+    window.addEventListener("resize", updateIndicator);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("resize", updateIndicator);
+    };
+  }, [updateIndicator]);
+
+  const handleMagnetic = (e: React.MouseEvent<HTMLElement>) => {
+    const el = e.currentTarget;
+    const rect = el.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    el.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+  };
+
+  const resetMagnetic = (e: React.MouseEvent<HTMLElement>) => {
+    e.currentTarget.style.transform = "translate(0, 0)";
+  };
+
+  // Ref callback que NO causa re-render
+  const setLinkRef = (index: number) => (el: HTMLAnchorElement | null) => {
+    linkRefs.current[index] = el;
+  };
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'bg-dark/90 backdrop-blur-xl shadow-lg shadow-black/20 border-b border-dark-border'
-          : 'bg-transparent'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-32 md:h-36">
-          <a href="#inicio" className="flex items-center gap-3 group">
-            <img
-              src={`${import.meta.env.BASE_URL}images/logo.png`}
-              alt="DotCom Software & Web Solutions"
-              className="h-12 md:h-14 w-auto bg-transparent"
-            />
-          </a>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-1">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="px-3 py-2 text-sm text-gray-300 hover:text-primary transition-colors duration-200 rounded-lg hover:bg-white/5"
-              >
-                {link.label}
-              </a>
-            ))}
-          </nav>
-
-          {/* CTA Button */}
-          <div className="hidden lg:flex items-center gap-3">
-            <a
-              href="#contacto"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary hover:bg-primary-dark text-dark font-semibold text-sm rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-primary/25"
-            >
-              <Calendar className="w-4 h-4" />
-              Agendar reunión
-            </a>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden p-2 text-gray-300 hover:text-primary transition-colors"
-            aria-label="Toggle menu"
-          >
-            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      <div
-        className={`lg:hidden transition-all duration-300 overflow-hidden ${
-          isOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
+    <>
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-transform duration-500 ${
+          hidden ? "-translate-y-full" : "translate-y-0"
         }`}
       >
-        <nav className="bg-dark/95 backdrop-blur-xl border-t border-dark-border px-4 py-4 space-y-1">
-          {navLinks.map((link) => (
+        <div className={`mx-auto px-4 transition-all duration-500 ${scrolled ? "pt-3" : "pt-6"}`}>
+          <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+            
+            {/* LOGO */}
+            <a href="#inicio" className="group flex items-center gap-2 shrink-0">
+              <div
+                className="relative overflow-hidden rounded-2xl transition-all duration-500 px-3 py-2"
+                style={{
+                  background: scrolled ? "rgba(0, 0, 0, 0.5)" : "transparent",
+                  backdropFilter: scrolled ? "blur(20px)" : "none",
+                  WebkitBackdropFilter: scrolled ? "blur(20px)" : "none",
+                  border: scrolled ? "1px solid rgba(255, 255, 255, 0.1)" : "1px solid transparent",
+                }}
+              >
+                <img
+                  src={`${import.meta.env.BASE_URL}images/logo.png`}
+                  alt="DotCom Software & Web Solutions"
+                  className="h-10 md:h-12 w-auto transition-transform duration-500 group-hover:scale-110"
+                />
+              </div>
+            </a>
+
+            {/* DESKTOP NAV - PILL FLOTANTE */}
+<nav
+  ref={navRef}
+  className="hidden lg:flex relative items-center"
+  style={{
+    background: "rgba(15, 23, 42, 0.7)",
+    backdropFilter: "blur(24px) saturate(180%)",
+    WebkitBackdropFilter: "blur(24px) saturate(180%)",
+    border: "1px solid rgba(255, 255, 255, 0.18)",
+    borderRadius: "9999px",
+    padding: "6px",
+    gap: "4px",
+    boxShadow: `
+      0 8px 32px rgba(0, 0, 0, 0.5),
+      0 0 0 1px rgba(255, 255, 255, 0.05),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.3)
+    `,
+  }}
+>
+
+              {navLinks.map((link, i) => (
+                <a
+                  key={link.href}
+                  ref={setLinkRef(i)}
+                  href={link.href}
+                  onMouseMove={handleMagnetic}
+                  onMouseLeave={resetMagnetic}
+                  className={`relative z-10 px-4 py-2 text-sm font-medium rounded-full transition-colors duration-300 ${
+                    activeSection === link.id ? "text-white" : "text-gray-300 hover:text-white"
+                  }`}
+                >
+                  {link.label}
+                </a>
+              ))}
+            </nav>
+
+            {/* CTA DESKTOP */}
+            <a
+              href="#contacto"
+              onMouseMove={handleMagnetic}
+              onMouseLeave={resetMagnetic}
+              className="hidden lg:inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-white text-sm font-semibold transition-all duration-300 hover:scale-105 group relative overflow-hidden shrink-0"
+              style={{
+                background: "linear-gradient(90deg, #06b6d4, #2563eb)",
+                boxShadow: "0 4px 20px rgba(6, 182, 212, 0.4)",
+              }}
+            >
+              <Calendar className="w-4 h-4 relative z-10" />
+              <span className="relative z-10">Agendar reunión</span>
+            </a>
+
+            {/* MOBILE BUTTON */}
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="lg:hidden p-3 rounded-full text-white transition-colors"
+              style={{
+                background: "rgba(0, 0, 0, 0.5)",
+                backdropFilter: "blur(20px)",
+                WebkitBackdropFilter: "blur(20px)",
+                border: "1px solid rgba(255, 255, 255, 0.1)",
+              }}
+              aria-label="Toggle menu"
+            >
+              {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* MOBILE MENU FULLSCREEN */}
+      <div
+        className={`fixed inset-0 z-40 lg:hidden transition-all duration-500 ${
+          isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        <div
+          className="absolute inset-0"
+          style={{
+            background: "rgba(0, 0, 0, 0.85)",
+            backdropFilter: "blur(30px)",
+            WebkitBackdropFilter: "blur(30px)",
+          }}
+          onClick={() => setIsOpen(false)}
+        />
+        <nav className="relative h-full flex flex-col items-center justify-center gap-2 px-6">
+          {navLinks.map((link, i) => (
             <a
               key={link.href}
               href={link.href}
-              onClick={handleNavClick}
-              className="block px-4 py-3 text-gray-300 hover:text-primary hover:bg-white/5 rounded-lg transition-all duration-200"
+              onClick={() => setIsOpen(false)}
+              className={`text-3xl font-bold text-white hover:text-cyan-400 transition-all duration-500 ${
+                isOpen ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+              }`}
+              style={{ transitionDelay: isOpen ? `${i * 60}ms` : "0ms" }}
             >
               {link.label}
             </a>
           ))}
           <a
             href="#contacto"
-            onClick={handleNavClick}
-            className="block mt-3 px-4 py-3 bg-primary hover:bg-primary-dark text-dark font-semibold text-center rounded-lg transition-all duration-300"
+            onClick={() => setIsOpen(false)}
+            className={`mt-8 inline-flex items-center gap-2 px-8 py-4 rounded-full text-white font-semibold transition-all duration-500 ${
+              isOpen ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+            }`}
+            style={{
+              background: "linear-gradient(90deg, #06b6d4, #2563eb)",
+              boxShadow: "0 8px 40px rgba(6, 182, 212, 0.5)",
+              transitionDelay: isOpen ? `${navLinks.length * 60}ms` : "0ms",
+            }}
           >
+            <Calendar className="w-5 h-5" />
             Agendar reunión
           </a>
         </nav>
       </div>
-    </header>
+    </>
   );
 }

@@ -16,15 +16,15 @@ export default function App() {
     <div className="bg-dark min-h-screen font-sans text-white antialiased">
       <Header />
       <main>
-        <Hero />
-        <Problems />
-        <Services />
-        <WhyUs />
-        <Process />
-        <Cases />
-        <About />
-        <FAQ />
-        <Contact />
+        <section id="inicio"><Hero /></section>
+        <section id="problemas"><Problems /></section>
+        <section id="servicios"><Services /></section>
+        <section id="why-us"><WhyUs /></section>
+        <section id="proceso"><Process /></section>
+        <section id="casos"><Cases /></section>
+        <section id="nosotros"><About /></section>
+        <section id="faq"><FAQ /></section>
+        <section id="contacto"><Contact /></section>
       </main>
       <Footer />
       <WhatsAppButton />
