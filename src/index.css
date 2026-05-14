@@ -948,3 +948,244 @@ html {
     min-height: 400px;
   }
 }
+/* ============================================
+   ⭐ WHYUS SECTION - Premium Cards
+   ============================================ */
+
+.whyus-bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(0, 191, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 191, 255, 0.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse at center, black 20%, transparent 80%);
+  pointer-events: none;
+}
+
+.whyus-gradient-text {
+  background: linear-gradient(
+    90deg,
+    #00BFFF 0%,
+    #8B5CF6 50%,
+    #EC4899 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: title-shimmer 6s ease infinite;
+}
+
+/* STAT CARDS */
+.whyus-stat-card {
+  position: relative;
+  padding: 24px 20px;
+  background: rgba(15, 20, 36, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  text-align: center;
+  backdrop-filter: blur(20px);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  overflow: hidden;
+}
+
+.whyus-stat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 191, 255, 0.05),
+    transparent 50%,
+    rgba(139, 92, 246, 0.05)
+  );
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.whyus-stat-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 191, 255, 0.3);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(0, 191, 255, 0.1);
+}
+
+.whyus-stat-card:hover::before {
+  opacity: 1;
+}
+
+/* WHYUS CARDS */
+.whyus-card {
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+  --card-color: 0, 191, 255;
+  position: relative;
+  padding: 32px;
+  background: rgba(15, 20, 36, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  backdrop-filter: blur(20px);
+  transition: 
+    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 0.3s,
+    opacity 0.7s,
+    translate 0.7s;
+  overflow: hidden;
+  cursor: default;
+}
+
+/* Spotlight que sigue al cursor */
+.whyus-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    500px circle at var(--mouse-x) var(--mouse-y),
+    rgba(var(--card-color), 0.15) 0%,
+    transparent 40%
+  );
+  opacity: 0;
+  transition: opacity 0.4s;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.whyus-card:hover::before {
+  opacity: 1;
+}
+
+/* Border gradient on hover */
+.whyus-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(var(--card-color), 0.6),
+    transparent 40%,
+    transparent 60%,
+    rgba(var(--card-color), 0.3)
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s;
+  pointer-events: none;
+}
+
+.whyus-card:hover::after {
+  opacity: 1;
+}
+
+.whyus-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(var(--card-color), 0.3);
+}
+
+/* Number gigante decorativo */
+.whyus-number {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  font-size: 4rem;
+  font-weight: 900;
+  line-height: 1;
+  font-feature-settings: 'tnum';
+  background: linear-gradient(
+    180deg,
+    rgba(var(--card-color), 0.15) 0%,
+    transparent 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  user-select: none;
+  pointer-events: none;
+  transition: all 0.4s;
+}
+
+.whyus-card:hover .whyus-number {
+  background: linear-gradient(
+    180deg,
+    rgba(var(--card-color), 0.35) 0%,
+    transparent 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transform: scale(1.05);
+}
+
+/* Icon box */
+.whyus-icon-box {
+  position: relative;
+  z-index: 2;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: rgba(var(--card-color), 0.12);
+  color: rgb(var(--card-color));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 0 0 0 rgba(var(--card-color), 0);
+}
+
+.whyus-card:hover .whyus-icon-box {
+  background: rgba(var(--card-color), 0.25);
+  transform: scale(1.1) rotate(-5deg);
+  box-shadow: 0 0 30px rgba(var(--card-color), 0.4);
+}
+
+/* Highlight badge */
+.whyus-highlight-badge {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  margin-bottom: 14px;
+  border-radius: 100px;
+  background: rgba(var(--card-color), 0.12);
+  border: 1px solid rgba(var(--card-color), 0.25);
+  color: rgb(var(--card-color));
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.3s;
+}
+
+.whyus-card:hover .whyus-highlight-badge {
+  background: rgba(var(--card-color), 0.2);
+  border-color: rgba(var(--card-color), 0.4);
+  transform: translateY(-2px);
+}
+
+/* Bottom accent line */
+.whyus-bottom-line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(var(--card-color)),
+    transparent
+  );
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.whyus-card:hover .whyus-bottom-line {
+  transform: scaleX(1);
+}
