@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Calendar, Menu, X } from "lucide-react";
 
 const navLinks = [
@@ -16,10 +16,7 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [activeSection, setActiveSection] = useState("inicio");
-  const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0, opacity: 0 });
   const lastScrollY = useRef(0);
-  const navRef = useRef<HTMLDivElement>(null);
-  const linkRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
   // Scroll behavior
   useEffect(() => {
@@ -56,31 +53,6 @@ export default function Header() {
     return () => observer.disconnect();
   }, []);
 
-  // Update indicator position
-  const updateIndicator = useCallback(() => {
-    const activeIndex = navLinks.findIndex((l) => l.id === activeSection);
-    const activeLink = linkRefs.current[activeIndex];
-    if (activeLink && navRef.current) {
-      const navRect = navRef.current.getBoundingClientRect();
-      const linkRect = activeLink.getBoundingClientRect();
-      setIndicatorStyle({
-        left: linkRect.left - navRect.left,
-        width: linkRect.width,
-        opacity: 1,
-      });
-    }
-  }, [activeSection]);
-
-  useEffect(() => {
-    // Pequeño delay para que el DOM esté listo
-    const timer = setTimeout(updateIndicator, 50);
-    window.addEventListener("resize", updateIndicator);
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener("resize", updateIndicator);
-    };
-  }, [updateIndicator]);
-
   const handleMagnetic = (e: React.MouseEvent<HTMLElement>) => {
     const el = e.currentTarget;
     const rect = el.getBoundingClientRect();
@@ -91,11 +63,6 @@ export default function Header() {
 
   const resetMagnetic = (e: React.MouseEvent<HTMLElement>) => {
     e.currentTarget.style.transform = "translate(0, 0)";
-  };
-
-  // Ref callback que NO causa re-render
-  const setLinkRef = (index: number) => (el: HTMLAnchorElement | null) => {
-    linkRefs.current[index] = el;
   };
 
   return (
@@ -129,7 +96,6 @@ export default function Header() {
 
             {/* DESKTOP NAV - PILL FLOTANTE */}
 <nav
-  ref={navRef}
   className="hidden lg:flex relative items-center"
   style={{
     background: "rgba(15, 23, 42, 0.7)",
@@ -148,10 +114,9 @@ export default function Header() {
   }}
 >
 
-              {navLinks.map((link, i) => (
+              {navLinks.map((link) => (
                 <a
                   key={link.href}
-                  ref={setLinkRef(i)}
                   href={link.href}
                   onMouseMove={handleMagnetic}
                   onMouseLeave={resetMagnetic}

@@ -1,107 +1,206 @@
-import { Search, FileText, Palette, Code, Rocket } from 'lucide-react';
+import { Search, FileText, Palette, Code, Rocket, Clock, CheckCircle2, ArrowRight } from 'lucide-react';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import { useEffect, useRef, useState } from 'react';
 
 const steps = [
   {
     icon: Search,
     title: 'Descubrimiento y análisis',
+    shortTitle: 'Discovery',
     description:
       'Analizamos tu negocio, objetivos y desafíos. Entendemos a fondo qué necesitás para diseñar la solución correcta.',
-    detail: 'Entrevistas · Análisis de procesos · Benchmarking',
+    duration: '1-2 semanas',
+    deliverables: ['Entrevistas con stakeholders', 'Análisis de procesos actuales', 'Benchmarking competitivo'],
+    color: '0, 191, 255',     // Cyan
+    colorHex: '#00BFFF',
   },
   {
     icon: FileText,
-    title: 'Definición de alcance y estrategia',
+    title: 'Definición de alcance',
+    shortTitle: 'Strategy',
     description:
       'Definimos alcance, funcionalidades clave y roadmap del proyecto. Te presentamos una propuesta clara y detallada.',
-    detail: 'Especificaciones · Roadmap · Presupuesto',
+    duration: '1 semana',
+    deliverables: ['Especificaciones técnicas', 'Roadmap detallado', 'Presupuesto cerrado'],
+    color: '139, 92, 246',    // Purple
+    colorHex: '#8B5CF6',
   },
   {
     icon: Palette,
     title: 'Diseño UX/UI',
+    shortTitle: 'Design',
     description:
       'Creamos wireframes y prototipos interactivos. Validamos cada pantalla con vos antes de escribir una línea de código.',
-    detail: 'Wireframes · Prototipos · Validación',
+    duration: '2-3 semanas',
+    deliverables: ['Wireframes', 'Prototipos navegables', 'Design system'],
+    color: '236, 72, 153',    // Pink
+    colorHex: '#EC4899',
   },
   {
     icon: Code,
     title: 'Desarrollo e integración',
+    shortTitle: 'Build',
     description:
       'Construimos tu solución en sprints, con entregas parciales para que veas el avance real y nos des feedback continuo.',
-    detail: 'Sprints · Code review · Testing',
+    duration: '4-12 semanas',
+    deliverables: ['Sprints semanales', 'Code review continuo', 'Testing automatizado'],
+    color: '251, 146, 60',    // Orange
+    colorHex: '#FB923C',
   },
   {
     icon: Rocket,
-    title: 'Lanzamiento y acompañamiento',
+    title: 'Lanzamiento y soporte',
+    shortTitle: 'Launch',
     description:
       'Desplegamos, capacitamos a tu equipo y te acompañamos en la etapa post-lanzamiento con soporte y mejoras continuas.',
-    detail: 'Deploy · Capacitación · Soporte',
+    duration: 'Continuo',
+    deliverables: ['Deploy en producción', 'Capacitación del equipo', 'Soporte post-launch'],
+    color: '0, 255, 136',     // Green
+    colorHex: '#00FF88',
   },
 ];
 
 export default function Process() {
-  const { ref, isVisible } = useScrollAnimation();
+  const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
 
   return (
-    <section id="proceso" className="py-20 md:py-28 bg-dark-light relative overflow-hidden">
-      <div className="absolute top-20 left-0 w-96 h-96 bg-primary/5 rounded-full blur-[150px]" />
-      <div className="absolute bottom-0 right-0 w-72 h-72 bg-primary/[0.03] rounded-full blur-[120px]" />
+    <section
+      id="proceso"
+      className="relative py-24 md:py-32 bg-dark-light overflow-hidden"
+    >
+      {/* Background effects */}
+      <div className="process-bg-grid" />
+      <div className="absolute top-1/4 -left-20 w-[500px] h-[500px] bg-primary/[0.04] rounded-full blur-[150px]" />
+      <div className="absolute bottom-1/4 -right-20 w-[500px] h-[500px] bg-purple-500/[0.04] rounded-full blur-[150px]" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
+        {/* HEADER */}
         <div
-          ref={ref}
-          className={`text-center mb-16 transition-all duration-700 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          ref={headerRef}
+          className={`text-center mb-20 transition-all duration-700 ${
+            headerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
-          <span className="text-primary text-sm font-semibold tracking-wider uppercase">
-            Cómo trabajamos
-          </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mt-3 mb-6">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm">
+            <Clock className="w-3.5 h-3.5 text-primary" />
+            <span className="text-primary text-xs font-bold tracking-widest uppercase">
+              Cómo trabajamos
+            </span>
+          </div>
+
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6 leading-[1.1] tracking-tight">
             Un proceso{' '}
-            <span className="gradient-text">claro, sin improvisación</span>
+            <span className="process-gradient-text">claro, sin improvisación.</span>
           </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+
+          <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
             Desde la primera reunión hasta el lanzamiento, te acompañamos en cada
-            etapa para que siempre sepas en qué estado está tu proyecto.
+            etapa.{' '}
+            <span className="text-white font-semibold">
+              Siempre sabés en qué estado está tu proyecto.
+            </span>
           </p>
         </div>
 
-        {/* Timeline */}
-        <div className="relative">
-          {/* Connector line - desktop */}
-          <div className="hidden lg:block absolute top-[3.5rem] left-[10%] right-[10%] h-0.5">
-            <div className="w-full h-full bg-gradient-to-r from-primary/10 via-primary/30 to-primary/10 rounded-full" />
-          </div>
+        {/* DESKTOP TIMELINE */}
+        <div className="hidden lg:block">
+          <DesktopTimeline />
+        </div>
 
-          {/* Connector line - mobile/tablet: vertical */}
-          <div className="lg:hidden absolute top-0 bottom-0 left-7 w-0.5 bg-gradient-to-b from-primary/10 via-primary/20 to-primary/10" />
+        {/* MOBILE TIMELINE */}
+        <div className="lg:hidden">
+          <MobileTimeline />
+        </div>
 
-          {/* Desktop layout */}
-          <div className="hidden lg:grid lg:grid-cols-5 gap-4">
-            {steps.map((step, index) => (
-              <DesktopStepCard key={step.title} step={step} index={index} />
-            ))}
-          </div>
-
-          {/* Mobile/tablet layout */}
-          <div className="lg:hidden space-y-2">
-            {steps.map((step, index) => (
-              <MobileStepCard key={step.title} step={step} index={index} />
-            ))}
-          </div>
+        {/* BOTTOM CTA */}
+        <div className="mt-20 text-center">
+          <p className="text-gray-400 text-sm mb-4">
+            ¿Querés ver cómo aplicamos este proceso en proyectos reales?
+          </p>
+          <a
+            href="#casos"
+            className="inline-flex items-center gap-2 text-primary hover:text-primary-light font-semibold group transition-colors"
+          >
+            Ver casos de éxito
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </a>
         </div>
       </div>
     </section>
   );
 }
 
+/* ============================================
+   DESKTOP TIMELINE - Horizontal con línea animada
+   ============================================ */
+function DesktopTimeline() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [progress, setProgress] = useState(0);
+  const [activeStep, setActiveStep] = useState<number | null>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      const start = windowHeight * 0.7;
+      const end = windowHeight * 0.3;
+      const total = start - end;
+      const current = start - rect.top;
+      const pct = Math.max(0, Math.min(100, (current / total) * 100));
+      setProgress(pct);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <div ref={containerRef} className="relative">
+      {/* Connector line - background */}
+      <div className="absolute top-[3.75rem] left-[10%] right-[10%] h-[2px] bg-white/5 rounded-full" />
+
+      {/* Connector line - animated progress */}
+      <div
+        className="absolute top-[3.75rem] left-[10%] h-[2px] rounded-full transition-all duration-300 ease-out"
+        style={{
+          width: `${(progress / 100) * 80}%`,
+          background: 'linear-gradient(90deg, #00BFFF 0%, #8B5CF6 25%, #EC4899 50%, #FB923C 75%, #00FF88 100%)',
+          boxShadow: '0 0 20px rgba(0, 191, 255, 0.5)',
+        }}
+      />
+
+      {/* Steps grid */}
+      <div className="grid grid-cols-5 gap-4">
+        {steps.map((step, index) => (
+          <DesktopStepCard
+            key={step.title}
+            step={step}
+            index={index}
+            isActive={activeStep === index}
+            onHover={() => setActiveStep(index)}
+            onLeave={() => setActiveStep(null)}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function DesktopStepCard({
   step,
   index,
+  isActive,
+  onHover,
+  onLeave,
 }: {
-  step: (typeof steps)[0];
+  step: typeof steps[0];
   index: number;
+  isActive: boolean;
+  onHover: () => void;
+  onLeave: () => void;
 }) {
   const { ref, isVisible } = useScrollAnimation();
   const Icon = step.icon;
@@ -109,24 +208,101 @@ function DesktopStepCard({
   return (
     <div
       ref={ref}
-      className={`relative text-center transition-all duration-700 ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-      }`}
-      style={{ transitionDelay: `${index * 150}ms` }}
+      className={`process-step-desktop ${isVisible ? 'visible' : ''}`}
+      style={{
+        '--step-color': step.color,
+        '--step-color-hex': step.colorHex,
+        transitionDelay: `${index * 100}ms`,
+      } as React.CSSProperties}
+      onMouseEnter={onHover}
+      onMouseLeave={onLeave}
     >
-      {/* Step number & icon */}
-      <div className="relative inline-flex flex-col items-center">
-        <div className="w-16 h-16 rounded-2xl bg-dark-card border-2 border-primary/30 flex items-center justify-center mb-4 hover:border-primary/60 hover:bg-primary/5 transition-all duration-300 relative z-10">
-          <Icon className="w-7 h-7 text-primary" />
-          <div className="absolute -top-2 -right-2 w-6 h-6 bg-primary text-dark text-xs font-bold rounded-full flex items-center justify-center shadow-lg shadow-primary/30">
-            {index + 1}
-          </div>
+      {/* Icon container */}
+      <div className="process-icon-wrapper">
+        <div className="process-icon-glow" />
+        <div className="process-icon-box">
+          <Icon className="w-7 h-7" strokeWidth={2} />
         </div>
+        <div className="process-step-number">{index + 1}</div>
       </div>
 
-      <h3 className="text-base font-bold text-white mb-2 leading-tight">{step.title}</h3>
-      <p className="text-gray-400 text-sm leading-relaxed mb-3">{step.description}</p>
-      <p className="text-primary/50 text-xs font-medium">{step.detail}</p>
+      {/* Duration badge */}
+      <div className="process-duration-badge">
+        <Clock className="w-3 h-3" />
+        <span>{step.duration}</span>
+      </div>
+
+      {/* Title */}
+      <h3 className="text-base font-bold text-white mb-2 leading-tight">
+        {step.title}
+      </h3>
+
+      {/* Description */}
+      <p className="text-gray-400 text-sm leading-relaxed mb-4">
+        {step.description}
+      </p>
+
+      {/* Deliverables - expand on hover */}
+      <div className={`process-deliverables ${isActive ? 'expanded' : ''}`}>
+        <div className="process-deliverables-label">Entregables</div>
+        <ul className="space-y-1.5">
+          {step.deliverables.map((item, i) => (
+            <li key={i} className="process-deliverable-item">
+              <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================
+   MOBILE TIMELINE - Vertical
+   ============================================ */
+function MobileTimeline() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      const start = windowHeight * 0.8;
+      const end = windowHeight * 0.2;
+      const total = rect.height + (start - end);
+      const current = start - rect.top;
+      const pct = Math.max(0, Math.min(100, (current / total) * 100));
+      setProgress(pct);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <div ref={containerRef} className="relative">
+      {/* Vertical line - background */}
+      <div className="absolute top-0 bottom-0 left-7 w-[2px] bg-white/5 rounded-full" />
+
+      {/* Vertical line - animated */}
+      <div
+        className="absolute top-0 left-7 w-[2px] rounded-full transition-all duration-300 ease-out"
+        style={{
+          height: `${progress}%`,
+          background: 'linear-gradient(180deg, #00BFFF 0%, #8B5CF6 25%, #EC4899 50%, #FB923C 75%, #00FF88 100%)',
+          boxShadow: '0 0 20px rgba(0, 191, 255, 0.5)',
+        }}
+      />
+
+      <div className="space-y-8">
+        {steps.map((step, index) => (
+          <MobileStepCard key={step.title} step={step} index={index} />
+        ))}
+      </div>
     </div>
   );
 }
@@ -135,7 +311,7 @@ function MobileStepCard({
   step,
   index,
 }: {
-  step: (typeof steps)[0];
+  step: typeof steps[0];
   index: number;
 }) {
   const { ref, isVisible } = useScrollAnimation();
@@ -144,26 +320,42 @@ function MobileStepCard({
   return (
     <div
       ref={ref}
-      className={`relative flex items-start gap-5 pl-2 transition-all duration-700 ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-      }`}
-      style={{ transitionDelay: `${index * 120}ms` }}
+      className={`process-step-mobile ${isVisible ? 'visible' : ''}`}
+      style={{
+        '--step-color': step.color,
+        '--step-color-hex': step.colorHex,
+        transitionDelay: `${index * 120}ms`,
+      } as React.CSSProperties}
     >
-      {/* Node on timeline */}
-      <div className="relative flex-shrink-0 z-10">
-        <div className="w-12 h-12 rounded-xl bg-dark-card border-2 border-primary/30 flex items-center justify-center">
-          <Icon className="w-5 h-5 text-primary" />
+      {/* Icon node */}
+      <div className="process-mobile-icon-wrapper">
+        <div className="process-mobile-icon-glow" />
+        <div className="process-mobile-icon-box">
+          <Icon className="w-5 h-5" strokeWidth={2} />
         </div>
-        <div className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-dark text-[10px] font-bold rounded-full flex items-center justify-center shadow-lg shadow-primary/30">
-          {index + 1}
-        </div>
+        <div className="process-mobile-step-number">{index + 1}</div>
       </div>
 
       {/* Content */}
-      <div className="pb-8">
-        <h3 className="text-lg font-bold text-white mb-1">{step.title}</h3>
-        <p className="text-gray-400 text-sm leading-relaxed mb-2">{step.description}</p>
-        <p className="text-primary/50 text-xs font-medium">{step.detail}</p>
+      <div className="flex-1 pb-2">
+        <div className="flex items-center gap-2 mb-2 flex-wrap">
+          <h3 className="text-lg font-bold text-white">{step.title}</h3>
+          <div className="process-duration-badge-mobile">
+            <Clock className="w-3 h-3" />
+            <span>{step.duration}</span>
+          </div>
+        </div>
+        <p className="text-gray-400 text-sm leading-relaxed mb-3">
+          {step.description}
+        </p>
+        <ul className="space-y-1.5">
+          {step.deliverables.map((item, i) => (
+            <li key={i} className="process-deliverable-item">
+              <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
