@@ -354,10 +354,14 @@ export default function About() {
                 <div className="about-founder-photo-glow" />
                 <div className="about-founder-photo-border" />
                 <img
-                  src="/emanuel.jpg"
-                  alt="Emanuel Moreno Di Cesare — Founder & Lead Developer"
-                  className="about-founder-photo"
-                />
+  src="/emanuel.webp"
+  alt="Emanuel Moreno Di Cesare — Founder & Lead Developer"
+  width={420}
+  height={525}
+  loading="eager"
+  fetchPriority="high"
+  className="about-founder-photo"
+/>
                 {/* Floating badge */}
                 <div className="about-founder-badge">
                   <div className="about-founder-badge-dot" />
