@@ -1,48 +1,25 @@
 # DOTCOM — Software Solutions
 
-**Independent software engineering, applied AI and secure digital systems.**
+Source code for the DOTCOM website: [bydotcom.com](https://www.bydotcom.com).
 
-[Website](https://www.bydotcom.com) · [Engineering portfolio](https://github.com/emamoreno7)
+DOTCOM is where I present my software development work, including business applications, AI automation and cybersecurity research.
 
-## About
+The website is a React application built with TypeScript, Vite and Tailwind CSS. The page is split into reusable components for services, case studies, company information and contact.
 
-DOTCOM is the professional identity behind a portfolio of software architecture, enterprise applications, AI-assisted automation and cybersecurity research. This repository contains the public-facing company website, not the proprietary implementations of its products.
-
-## Engineering portfolio
-
-| Domain | Selected work |
-| --- | --- |
-| Applied AI | [Autonomous marketing and media orchestration](https://github.com/emamoreno7/emamoreno7/blob/main/showcase/autopilot.md) |
-| Cybersecurity | [Local cyber intelligence and evidence validation](https://github.com/emamoreno7/emamoreno7/blob/main/showcase/cyber-intelligence.md) |
-| Business systems | [Enterprise SaaS and transactional architecture](https://github.com/emamoreno7/emamoreno7/blob/main/showcase/enterprise-saas.md) |
-| Privacy engineering | [Mobile security and on-device processing](https://github.com/emamoreno7/emamoreno7/blob/main/showcase/mobile-security.md) |
-
-The case studies distinguish active research, prototypes and implemented functionality from future design goals.
-
-## Website architecture
-
-The site is a component-based React application, built with Vite, TypeScript and Tailwind CSS. Its sections communicate services, delivery process, selected cases and contact options.
-
-```mermaid
-flowchart LR
-    A[React application] --> B[Reusable page sections]
-    B --> C[Services and case studies]
-    B --> D[Company and contact]
-    A --> E[Vite build]
-    E --> F[Static web assets]
-```
-
-## Local development
+## Run locally
 
 ```bash
 npm install
 npm run dev
 ```
 
-`npm run build` creates the production bundle. `npm run preview` previews the generated build locally.
+Use `npm run build` to create the production bundle and `npm run preview` to preview it locally.
 
-## Contact
+## Other work
 
-Software architecture, applied AI and engineering collaborations: [bydotcom.com](https://www.bydotcom.com).
+- [CYBER-AI and security research](https://github.com/emamoreno7/emamoreno7/blob/main/showcase/cyber-intelligence.md)
+- [AutoPilot AI](https://github.com/emamoreno7/emamoreno7/blob/main/showcase/autopilot.md)
+- [Business applications](https://github.com/emamoreno7/emamoreno7/blob/main/showcase/enterprise-saas.md)
+- [Mobile security projects](https://github.com/emamoreno7/emamoreno7/blob/main/showcase/mobile-security.md)
 
-**DOTCOM — Research & Engineering · Mendoza, Argentina**
+[My GitHub profile](https://github.com/emamoreno7)
